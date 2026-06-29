@@ -3,7 +3,7 @@
 -- =============================================
 
 -- Enable required extensions
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- =====================
@@ -58,7 +58,7 @@ CREATE OR REPLACE TRIGGER update_profiles_updated_at
 -- SUBSCRIPTION TIERS
 -- =====================
 CREATE TABLE public.subscription_tiers (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL UNIQUE,
     slug TEXT NOT NULL UNIQUE,
     price_monthly DECIMAL(10,2) NOT NULL DEFAULT 0,
@@ -78,7 +78,7 @@ CREATE INDEX idx_tiers_slug ON public.subscription_tiers(slug);
 -- USER SUBSCRIPTIONS
 -- =====================
 CREATE TABLE public.user_subscriptions (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
     tier_id UUID NOT NULL REFERENCES public.subscription_tiers(id),
     status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'cancelled', 'expired', 'trial', 'past_due')),
@@ -104,7 +104,7 @@ CREATE OR REPLACE TRIGGER update_user_subscriptions_updated_at
 -- PREMIUM CONTENT
 -- =====================
 CREATE TABLE public.premium_content (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     title TEXT NOT NULL,
     slug TEXT NOT NULL UNIQUE,
     body TEXT NOT NULL,
@@ -131,7 +131,7 @@ CREATE OR REPLACE TRIGGER update_premium_content_updated_at
 -- PAYMENTS
 -- =====================
 CREATE TABLE public.payments (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
     amount DECIMAL(10,2) NOT NULL,
     currency TEXT NOT NULL DEFAULT 'USD',
