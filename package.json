@@ -1,0 +1,26 @@
+{
+  "name": "prestige-supliments",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:mobile": "cd apps/mobile && npx expo start",
+    "dev:web": "cd apps/web && npm run dev",
+    "build:web": "cd apps/web && npm run build",
+    "db:migrate": "cd supabase && supabase db push",
+    "db:seed": "cd supabase && supabase db seed",
+    "db:reset": "cd supabase && supabase db reset",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "npm@10.0.0"
+}
